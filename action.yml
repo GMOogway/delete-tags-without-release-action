@@ -29,7 +29,7 @@ runs:
         tags=$(jq -c -r .[].name  <<< '${{ steps.get_tags.outputs.data }}')
         echo $tags | while read -r tag; 
         do
-          if [[ "$tag" =~ "$tags_with_release" ]]; then
+          if [[ *"$tag"* == "$tags_with_release" ]]; then
             echo "$tag has a release"
           else
             echo "$tag is free"
