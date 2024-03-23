@@ -26,8 +26,7 @@ runs:
       shell: bash
       run: |
         tags_with_release=$(jq -c -r .[].tag_name  <<< '${{ steps.get_releases.outputs.data }}')
-        tags=$(jq -c -r .[].name  <<< '${{ steps.get_tags.outputs.data }}')
-        echo $tags | while read -r tag; 
+        jq -c -r .[].name  <<< '${{ steps.get_tags.outputs.data }}' | while read -r tag; 
         do
           if [[ *"$tag"* == "$tags_with_release" ]]; then
             echo "$tag has a release"
