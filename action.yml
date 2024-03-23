@@ -12,14 +12,14 @@ runs:
       uses: octokit/request-action@v2.1.7
       id: get_tags
       with:
-        route: GET /repos/${{ github.repository }}/tags
+        route: GET /repos/${{ env.repository }}/tags
       env:
         GITHUB_TOKEN: ${{ github.token }}
     - name: Get Releases
       uses: octokit/request-action@v2.1.7
       id: get_releases
       with:
-        route: GET /repos/${{ github.repository }}/releases
+        route: GET /repos/${{ env.repository }}/releases
       env:
         GITHUB_TOKEN: ${{ github.token }}
     - name: Find Tags with Releases
@@ -38,7 +38,7 @@ runs:
             echo "$tag has a release"
           else
             echo "$tag is free"
-            gh api --method DELETE -H "Accept: application/vnd.github+json" "/repos/${{ github.repository }}/git/refs/tags/$tag"
+            gh api --method DELETE -H "Accept: application/vnd.github+json" "/repos/${{ env.repository }}/git/refs/tags/$tag"
           fi
         done
         
