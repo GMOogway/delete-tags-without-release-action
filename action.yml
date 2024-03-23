@@ -22,19 +22,17 @@ runs:
         route: GET /repos/${{ env.repository }}/releases
       env:
         GITHUB_TOKEN: ${{ github.token }}
-    - name: Find Tags with Releases
-      id: find_tags_with_release
-      shell: bash
-      run: |
-        TAGS_WITH_RELEASES=$(jq -c -r .[].tag_name  <<< '${{ steps.get_releases.outputs.data }}')
-        echo "VALUES<<EOF"$'\n'"$TAGS_WITH_RELEASES"$'\n'EOF >> $GITHUB_OUTPUT
     - name: Delete free Tags
       shell: bash
       run: |
         tags_with_release=$(jq -c -r .[].tag_name  <<< '${{ steps.get_releases.outputs.data }}')
-        jq -c -r .[].name  <<< '${{ steps.get_tags.outputs.data }}' | while read -r tag; 
+        tags=$(jq -c -r .[].name  <<< '${{ steps.get_tags.outputs.data }}')
+        echo $tags_with_release
+        echo $tags
+        echo $tags | while read -r tag; 
         do 
-          if [[ "$tags_with_release" == *"$tag"* ]]; then
+          #if [[ "$tags_with_release" == *"$tag"* ]]; then
+          if [[ "$tag" == *"$tags_with_release"* ]]; then
             echo "$tag has a release"
           else
             echo "$tag is free"
