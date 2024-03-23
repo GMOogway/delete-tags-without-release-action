@@ -27,12 +27,10 @@ runs:
       run: |
         tags_with_release=$(jq -c -r .[].tag_name  <<< '${{ steps.get_releases.outputs.data }}')
         tags=$(jq -c -r .[].name  <<< '${{ steps.get_tags.outputs.data }}')
-        echo $tags_with_release
-        echo $tags
-        echo $tags | while read -r tag; 
+        echo $(tags) | while read -r tag; 
         do 
-          #if [[ "$tags_with_release" == *"$tag"* ]]; then
-          if [[ "$tag" == *"$tags_with_release"* ]]; then
+          # if [[ "$tags_with_release" == *"$tag"* ]]; then
+          if [[ $(tags_with_release) =~ $(tag) ]]; then
             echo "$tag has a release"
           else
             echo "$tag is free"
